@@ -1,0 +1,23 @@
+{{define "jobs_table"}}
+<table id="jobs-table"
+       hx-get="/jobqueue/dashboard/jobs" hx-trigger="every 2s" hx-swap="outerHTML">
+  <thead>
+    <tr><th>ID</th><th>Task</th><th>Status</th><th>Attempts</th><th>Actions</th></tr>
+  </thead>
+  <tbody>
+    {{if .Jobs}}
+      {{range .Jobs}}
+      <tr>
+        <td>{{.ID}}</td>
+        <td>{{.Task}}</td>
+        <td><span class="status-{{.Status}}">{{.Status}}</span></td>
+        <td>{{.Attempts}}</td>
+        <td><button hx-get="/jobqueue/dashboard/jobs/{{.ID}}" hx-target="#job-detail" hx-swap="innerHTML">View</button></td>
+      </tr>
+      {{end}}
+    {{else}}
+      <tr><td colspan="5" class="empty">No jobs yet — use the action bar above to create some.</td></tr>
+    {{end}}
+  </tbody>
+</table>
+{{end}}

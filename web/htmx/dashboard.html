@@ -1,0 +1,71 @@
+{{define "dashboard"}}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Job Queue Dashboard</title>
+  <script src="//unpkg.com/htmx.org@1.9.12"></script>
+  <style>
+    * { box-sizing: border-box; }
+    body { font-family: -apple-system, "Segoe UI", Roboto, sans-serif; max-width: 960px; margin: 0 auto; padding: 24px 20px; color: #1f2933; background: #f7f9fb; }
+    h1 { font-size: 1.5rem; margin: 0 0 1.25rem; }
+    h2 { font-size: 1.05rem; margin: 1.75rem 0 0.6rem; }
+    .action-bar { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; background: #fff; border: 1px solid #e4e9ee; border-radius: 8px; padding: 14px; }
+    .action-bar form { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin: 0; }
+    .action-bar label { display: flex; flex-direction: column; font-size: 0.72rem; color: #616e7c; gap: 3px; }
+    input { padding: 6px 8px; border: 1px solid #cbd2d9; border-radius: 6px; font-size: 0.9rem; width: 130px; }
+    button { padding: 7px 14px; cursor: pointer; font-size: 0.88rem; border: 1px solid #2f80ed; background: #2f80ed; color: #fff; border-radius: 6px; }
+    button.secondary { border-color: #cbd2d9; background: #fff; color: #1f2933; }
+    .status-summary { display: flex; flex-wrap: wrap; gap: 12px; }
+    .badge { background: #fff; border: 1px solid #e4e9ee; border-radius: 8px; padding: 10px 16px; min-width: 120px; box-shadow: 0 1px 2px rgba(31, 41, 51, 0.04); }
+    .badge .count { display: block; font-size: 1.4rem; font-weight: 700; }
+    .badge .label { font-size: 0.75rem; color: #616e7c; text-transform: uppercase; letter-spacing: 0.04em; }
+    table { width: 100%; border-collapse: collapse; background: #fff; border: 1px solid #e4e9ee; border-radius: 8px; overflow: hidden; }
+    th, td { text-align: left; padding: 10px 14px; border-bottom: 1px solid #eef1f4; font-size: 0.9rem; }
+    th { background: #f2f5f8; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.04em; color: #616e7c; }
+    tr:last-child td { border-bottom: none; }
+    td button { padding: 4px 12px; font-size: 0.8rem; }
+    .status-pending   { color: #f2994a; font-weight: 600; }
+    .status-running   { color: #2f80ed; font-weight: 600; }
+    .status-failed    { color: #eb5757; font-weight: 600; }
+    .status-completed { color: #27ae60; font-weight: 600; }
+    .empty { text-align: center; color: #9aa5b1; font-style: italic; }
+    .card { background: #fff; border: 1px solid #e4e9ee; border-radius: 8px; padding: 16px; margin-top: 8px; }
+    .card h3 { margin: 0 0 10px; font-size: 1rem; }
+    .card dl { display: grid; grid-template-columns: 100px 1fr; gap: 6px 12px; margin: 0; }
+    .card dt { color: #616e7c; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.03em; align-self: center; }
+    .card dd { margin: 0; font-size: 0.92rem; }
+    .search-row { display: flex; gap: 8px; margin-bottom: 4px; }
+    #job-detail { min-height: 56px; }
+  </style>
+</head>
+<body>
+  <h1>Job Queue Dashboard</h1>
+
+  <div class="action-bar">
+    <form hx-post="/jobqueue/dashboard/jobs/create" hx-target="#jobs-table" hx-swap="outerHTML">
+      <label>Job1 <input name="Job1" value="JobTest1" required></label>
+      <label>Job2 <input name="Job2" value="JobTest2" required></label>
+      <label>Job3 <input name="Job3" value="JobTest3" required></label>
+      <button type="submit">Create 3 Jobs</button>
+    </form>
+    <button hx-post="/jobqueue/dashboard/jobs/unstable" hx-target="#jobs-table" hx-swap="outerHTML">Create Unstable Job</button>
+    <button class="secondary" hx-get="/jobqueue/dashboard/jobs" hx-target="#jobs-table" hx-swap="outerHTML">Refresh</button>
+  </div>
+
+  <h2>Status Summary</h2>
+  {{template "status_summary" .}}
+
+  <h2>Jobs</h2>
+  {{template "jobs_table" .}}
+
+  <h2>Job Detail</h2>
+  <form class="search-row" hx-get="/jobqueue/dashboard/jobs/search" hx-target="#job-detail" hx-swap="innerHTML">
+    <input name="id" placeholder="Enter job ID" required>
+    <button type="submit" class="secondary">Search</button>
+  </form>
+  <div id="job-detail"><div class="card"><p class="empty" style="margin:0">No job selected — click View in a table row or search by ID.</p></div></div>
+</body>
+</html>
+{{end}}

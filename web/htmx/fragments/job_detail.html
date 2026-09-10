@@ -1,0 +1,17 @@
+{{define "job_detail"}}
+<div class="card">
+  <h3>Job Detail</h3>
+  <dl>
+    <dt>ID</dt><dd>{{.Job.ID}}</dd>
+    <dt>Task</dt><dd>{{.Job.Task}}</dd>
+    <dt>Status</dt><dd><span class="status-{{.Job.Status}}">{{.Job.Status}}</span></dd>
+    <dt>Attempts</dt><dd>{{.Job.Attempts}}</dd>
+  </dl>
+</div>
+{{end}}
+
+{{define "job_not_found"}}
+<div class="card">
+  <p class="empty" style="margin:0">Job not found — check the ID and try again.</p>
+</div>
+{{end}}

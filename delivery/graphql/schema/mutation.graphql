@@ -1,0 +1,4 @@
+type Mutation {
+  # Create New Job
+  Enqueue(task: String!): Job!
+}

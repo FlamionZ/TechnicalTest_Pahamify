@@ -1,0 +1,10 @@
+type Query {
+  # List all jobs in the system
+  Jobs: [Job!]!
+
+  # Fetch a single job by ID
+  Job(id: String!): Job
+
+  # Show job status counts
+  JobStatus: JobStatus!
+}

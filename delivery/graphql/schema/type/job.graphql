@@ -1,0 +1,13 @@
+type Job {
+	id: String!
+	task: String!
+	status: String!
+	attempts: Int!
+}
+
+type JobStatus {
+  pending: Int!
+  running: Int!
+  failed: Int!
+  completed: Int!
+}

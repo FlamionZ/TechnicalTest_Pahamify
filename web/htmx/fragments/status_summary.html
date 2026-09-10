@@ -1,0 +1,9 @@
+{{define "status_summary"}}
+<div id="status-summary" class="status-summary"
+     hx-get="/jobqueue/dashboard/status" hx-trigger="every 2s" hx-swap="outerHTML">
+  <div class="badge badge-pending"><span class="count">{{.Status.Pending}}</span><span class="label">Pending</span></div>
+  <div class="badge badge-running"><span class="count">{{.Status.Running}}</span><span class="label">Running</span></div>
+  <div class="badge badge-failed"><span class="count">{{.Status.Failed}}</span><span class="label">Failed</span></div>
+  <div class="badge badge-completed"><span class="count">{{.Status.Completed}}</span><span class="label">Completed</span></div>
+</div>
+{{end}}
